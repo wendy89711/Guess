@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void reset() {
         secret = new Random().nextInt(10)+1;
+        Log.d(TAG,"secret:" + secret);
     }
     public void resultButton (View view) {
         int guessNumber = Integer.parseInt(number.getText().toString());
