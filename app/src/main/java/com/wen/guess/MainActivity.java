@@ -11,9 +11,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.Random;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
-
+    int secret = new Random().nextInt(10)+1;
+    Scanner scanner = new Scanner(System.in);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +35,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public boolean guessNumber(int text){
 
+        return false;
+    }
+    public void button (View view) {
+        int guess = scanner.nextInt();
+        guess = secret;
+        if (guessNumber(guess))
+            Toast.makeText(MainActivity.this, "Bingo", Toast.LENGTH_LONG).show();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
