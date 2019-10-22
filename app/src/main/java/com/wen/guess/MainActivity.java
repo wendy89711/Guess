@@ -39,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                reset();
             }
         });
     }
-
+    public void reset() {
+        secret = new Random().nextInt(10)+1;
+    }
     public void resultButton (View view) {
         int guessNumber = Integer.parseInt(number.getText().toString());
 
