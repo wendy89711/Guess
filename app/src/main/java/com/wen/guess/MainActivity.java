@@ -8,9 +8,14 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -18,32 +23,44 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     int secret = new Random().nextInt(10)+1;
-    Scanner scanner = new Scanner(System.in);
+    private TextView number;
+    private ImageView result;
+    String TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG,"secret:" + secret);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        number = findViewById(R.id.guess_number);
+        result = findViewById(R.id.image);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
     }
-    public boolean guessNumber(int text){
 
-        return false;
-    }
-    public void button (View view) {
-        int guess = scanner.nextInt();
-        guess = secret;
-        if (guessNumber(guess))
+    public void resultButton (View view) {
+        int guessNumber = Integer.parseInt(number.getText().toString());
+
+        result.setVisibility(View.VISIBLE);
+        result.setAlpha(1.0f);
+        if (guessNumber == secret) {
             Toast.makeText(MainActivity.this, "Bingo", Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.happy);
+        } else if(guessNumber > secret) {
+            Toast.makeText(MainActivity.this,"Lower",Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.sad);
+            result.animate().alpha(0.0f).setDuration(1200);
+        } else if (guessNumber < secret) {
+                Toast.makeText(MainActivity.this,"Higher",Toast.LENGTH_LONG).show();
+            result.setImageResource(R.drawable.sad);
+            result.animate().alpha(0.0f).setDuration(1200);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
