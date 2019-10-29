@@ -1,10 +1,12 @@
 package com.wen.guess;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,7 +25,9 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
     int secret = new Random().nextInt(10)+1;
+    int counter;
     private TextView number;
+    private TextView edCounter;
     private ImageView result;
     String TAG = MainActivity.class.getSimpleName();
     @Override
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         number = findViewById(R.id.guess_number);
+        edCounter = findViewById(R.id.counter);
         result = findViewById(R.id.image);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 reset();
             }
         });
+
     }
     public void reset() {
         secret = new Random().nextInt(10)+1;
@@ -49,21 +55,42 @@ public class MainActivity extends AppCompatActivity {
     }
     public void resultButton (View view) {
         int guessNumber = Integer.parseInt(number.getText().toString());
+        counter++;
+        edCounter.setText(counter+"");
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                reset();
+            }
+        };
 
         result.setVisibility(View.VISIBLE);
         result.setAlpha(1.0f);
+        String message = "haha";
         if (guessNumber == secret) {
             Toast.makeText(MainActivity.this, "Bingo", Toast.LENGTH_LONG).show();
             result.setImageResource(R.drawable.happy);
-        } else if(guessNumber > secret) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("HAHA")
+                    .setMessage("Bingo")
+                    .setPositiveButton("OK",null)
+                    .show();
+
+        } else
+        if(guessNumber > secret) {
             Toast.makeText(MainActivity.this,"Lower",Toast.LENGTH_LONG).show();
             result.setImageResource(R.drawable.sad);
             result.animate().alpha(0.0f).setDuration(1200);
+            message = "Lower";
+            listener = null;
         } else if (guessNumber < secret) {
                 Toast.makeText(MainActivity.this,"Higher",Toast.LENGTH_LONG).show();
             result.setImageResource(R.drawable.sad);
             result.animate().alpha(0.0f).setDuration(1200);
+            message = "Higher";
+            listener = null;
         }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
